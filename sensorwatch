@@ -1,0 +1,72 @@
+import Foundation
+import CoreMotion
+import WatchConnectivity
+
+class WatchSensorManager: NSObject, ObservableObject {
+    private var motionManager = CMMotionManager()
+    private var session = WCSession.default
+    @Published var isRecording = false
+    private var recordedData = [SensorData]()
+    private let chunkSize = 50  // 한 번에 전송할 데이터 개수
+    private let maxRetries = 3
+    private let retryDelay = 0.5
+    private let chunkDelay = 0.3
+    
+    override init() {
+        super.init()
+        setupWCSession()
+    }
+
+    private func setupWCSession() {
+        if WCSession.isSupported() {
+            session.delegate = self
+            session.activate()
+        }
+    }
+
+    func startRecording() {
+        guard motionManager.isAccelerometerAvailable, motionManager.isGyroAvailable else { return }
+        isRecording = true
+        recordedData.removeAll()
+        motionManager.accelerometerUpdateInterval = 0.01 // 100Hz
+        motionManager.gyroUpdateInterval = 0.01 // 100Hz
+
+        motionManager.startAccelerometerUpdates(to: .main) { [weak self] accelerometerData, error in
+            guard let self = self, let accelerometerData = accelerometerData else { return }
+
+            let currentTimestamp = Date()
+
+            // AccelerometerData 생성
+            let accelerometerData = AccelerometerData(
+                x: accelerometerData.acceleration.x,
+                y: accelerometerData.acceleration.y,
+                z: accelerometerData.acceleration.z,
+                timestamp: currentTimestamp
+            )
+
+            self.recordedData.append(accelerometerData)
+        }
+
+        motionManager.startGyroUpdates(to: .main) { [weak self] gyroData, error in
+            guard let self = self, let gyroData = gyroData else { return }
+
+            let currentTimestamp = Date()
+
+            // GyroData 생성
+            let gyroData = GyroData(
+                x: gyroData.rotationRate.x,
+                y: gyroData.rotationRate.y,
+                z: gyroData.rotationRate.z,
+                timestamp: currentTimestamp
+            )
+
+            self.recordedData.append(gyroData)
+        }
+    }
+
+    func stopRecording() {
+        isRecording = false
+        motionManager.stopAccelerometerUpdates()
+        motionManager.stopGyroUpdates()
+    }
+}

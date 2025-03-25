@@ -1,0 +1,1148 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CF27466C2D1D22230008435B /* sensorwatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CF2746492D1D22220008435B /* sensorwatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CFDD780E2D5C3EEE003B8C11 /* MovellaDotSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD780D2D5C3EEE003B8C11 /* MovellaDotSdk.framework */; };
+		CFDD780F2D5C3EEE003B8C11 /* MovellaDotSdk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD780D2D5C3EEE003B8C11 /* MovellaDotSdk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CFDD78152D5C4297003B8C11 /* MovellaDotSdkMfm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD78142D5C4297003B8C11 /* MovellaDotSdkMfm.framework */; };
+		CFDD78162D5C4297003B8C11 /* MovellaDotSdkMfm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD78142D5C4297003B8C11 /* MovellaDotSdkMfm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CF2746592D1D22230008435B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8D77412D1D1A4E00EE258C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF2746482D1D22220008435B;
+			remoteInfo = "sensorwatch Watch App";
+		};
+		CF2746632D1D22230008435B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8D77412D1D1A4E00EE258C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF2746482D1D22220008435B;
+			remoteInfo = "sensorwatch Watch App";
+		};
+		CF27466A2D1D22230008435B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8D77412D1D1A4E00EE258C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF2746482D1D22220008435B;
+			remoteInfo = "sensorwatch Watch App";
+		};
+		CF8D77612D1D1A4F00EE258C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8D77412D1D1A4E00EE258C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8D77482D1D1A4F00EE258C;
+			remoteInfo = sensorlog;
+		};
+		CF8D776B2D1D1A4F00EE258C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8D77412D1D1A4E00EE258C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF8D77482D1D1A4F00EE258C;
+			remoteInfo = sensorlog;
+		};
+		CFEE92A72D1D37B000A7C343 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CF8D77412D1D1A4E00EE258C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CF2746482D1D22220008435B;
+			remoteInfo = "sensorwatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CF27466D2D1D22230008435B /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				CF27466C2D1D22230008435B /* sensorwatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFDD77FC2D5C3476003B8C11 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CFDD780F2D5C3EEE003B8C11 /* MovellaDotSdk.framework in Embed Frameworks */,
+				CFDD78162D5C4297003B8C11 /* MovellaDotSdkMfm.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CF2746492D1D22220008435B /* sensorwatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sensorwatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2746582D1D22230008435B /* sensorwatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "sensorwatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2746622D1D22230008435B /* sensorwatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "sensorwatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF8D77492D1D1A4F00EE258C /* sensorlog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sensorlog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF8D77602D1D1A4F00EE258C /* sensorlogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sensorlogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF8D776A2D1D1A4F00EE258C /* sensorlogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sensorlogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFD740042D60FEC500F56DDC /* DotBatteryInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotBatteryInfo.h; sourceTree = "<group>"; };
+		CFD740052D60FEC500F56DDC /* DotConnectionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotConnectionManager.h; sourceTree = "<group>"; };
+		CFD740062D60FEC500F56DDC /* DotDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotDefine.h; sourceTree = "<group>"; };
+		CFD740072D60FEC500F56DDC /* DotDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotDevice.h; sourceTree = "<group>"; };
+		CFD740082D60FEC500F56DDC /* DotDevicePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotDevicePool.h; sourceTree = "<group>"; };
+		CFD740092D60FEC500F56DDC /* DotFilterProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotFilterProfile.h; sourceTree = "<group>"; };
+		CFD7400A2D60FEC500F56DDC /* DotFirmwareVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotFirmwareVersion.h; sourceTree = "<group>"; };
+		CFD7400B2D60FEC500F56DDC /* DotLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotLog.h; sourceTree = "<group>"; };
+		CFD7400C2D60FEC500F56DDC /* DotOtaManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotOtaManager.h; sourceTree = "<group>"; };
+		CFD7400D2D60FEC500F56DDC /* DotPlotData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotPlotData.h; sourceTree = "<group>"; };
+		CFD7400E2D60FEC500F56DDC /* DotReconnectManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotReconnectManager.h; sourceTree = "<group>"; };
+		CFD7400F2D60FEC500F56DDC /* DotRecording.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotRecording.h; sourceTree = "<group>"; };
+		CFD740102D60FEC500F56DDC /* DotSyncManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotSyncManager.h; sourceTree = "<group>"; };
+		CFD740112D60FEC500F56DDC /* DotUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DotUtils.h; sourceTree = "<group>"; };
+		CFD740122D60FEC500F56DDC /* MovellaDotSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovellaDotSdk.h; sourceTree = "<group>"; };
+		CFD740152D60FF7D00F56DDC /* sensorlog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sensorlog-Bridging-Header.h"; sourceTree = "<group>"; };
+		CFDD780D2D5C3EEE003B8C11 /* MovellaDotSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MovellaDotSdk.framework; path = Movella_DOT_SDK_iOS_v2023.6.0/MovellaDotSdk.framework; sourceTree = "<group>"; };
+		CFDD78142D5C4297003B8C11 /* MovellaDotSdkMfm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MovellaDotSdkMfm.framework; path = Movella_DOT_SDK_iOS_v2023.6.0/MovellaDotSdkMfm.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CFEE93C72D1E7E5C00A7C343 /* Exceptions for "sensorlog" folder in "sensorlog" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CF8D77482D1D1A4F00EE258C /* sensorlog */;
+		};
+		CFEE93C82D1E7E6800A7C343 /* Exceptions for "sensorwatch Watch App" folder in "sensorwatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CF2746482D1D22220008435B /* sensorwatch Watch App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CF27464A2D1D22220008435B /* sensorwatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CFEE93C82D1E7E6800A7C343 /* Exceptions for "sensorwatch Watch App" folder in "sensorwatch Watch App" target */,
+			);
+			path = "sensorwatch Watch App";
+			sourceTree = "<group>";
+		};
+		CF27465B2D1D22230008435B /* sensorwatch Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "sensorwatch Watch AppTests";
+			sourceTree = "<group>";
+		};
+		CF2746652D1D22230008435B /* sensorwatch Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "sensorwatch Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		CF2746882D1D24AF0008435B /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		CF8D774B2D1D1A4F00EE258C /* sensorlog */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CFEE93C72D1E7E5C00A7C343 /* Exceptions for "sensorlog" folder in "sensorlog" target */,
+			);
+			path = sensorlog;
+			sourceTree = "<group>";
+		};
+		CF8D77632D1D1A4F00EE258C /* sensorlogTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = sensorlogTests;
+			sourceTree = "<group>";
+		};
+		CF8D776D2D1D1A4F00EE258C /* sensorlogUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = sensorlogUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CF2746462D1D22220008435B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF2746552D1D22230008435B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF27465F2D1D22230008435B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D77462D1D1A4F00EE258C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFDD780E2D5C3EEE003B8C11 /* MovellaDotSdk.framework in Frameworks */,
+				CFDD78152D5C4297003B8C11 /* MovellaDotSdkMfm.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D775D2D1D1A4F00EE258C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D77672D1D1A4F00EE258C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CF8D77402D1D1A4E00EE258C = {
+			isa = PBXGroup;
+			children = (
+				CFD740152D60FF7D00F56DDC /* sensorlog-Bridging-Header.h */,
+				CFD740132D60FEC500F56DDC /* Headers */,
+				CF2746882D1D24AF0008435B /* Shared */,
+				CF8D774B2D1D1A4F00EE258C /* sensorlog */,
+				CF8D77632D1D1A4F00EE258C /* sensorlogTests */,
+				CF8D776D2D1D1A4F00EE258C /* sensorlogUITests */,
+				CF27464A2D1D22220008435B /* sensorwatch Watch App */,
+				CF27465B2D1D22230008435B /* sensorwatch Watch AppTests */,
+				CF2746652D1D22230008435B /* sensorwatch Watch AppUITests */,
+				CFDD780C2D5C3EEE003B8C11 /* Frameworks */,
+				CF8D774A2D1D1A4F00EE258C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CF8D774A2D1D1A4F00EE258C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CF8D77492D1D1A4F00EE258C /* sensorlog.app */,
+				CF8D77602D1D1A4F00EE258C /* sensorlogTests.xctest */,
+				CF8D776A2D1D1A4F00EE258C /* sensorlogUITests.xctest */,
+				CF2746492D1D22220008435B /* sensorwatch Watch App.app */,
+				CF2746582D1D22230008435B /* sensorwatch Watch AppTests.xctest */,
+				CF2746622D1D22230008435B /* sensorwatch Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CFD740132D60FEC500F56DDC /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				CFD740042D60FEC500F56DDC /* DotBatteryInfo.h */,
+				CFD740052D60FEC500F56DDC /* DotConnectionManager.h */,
+				CFD740062D60FEC500F56DDC /* DotDefine.h */,
+				CFD740072D60FEC500F56DDC /* DotDevice.h */,
+				CFD740082D60FEC500F56DDC /* DotDevicePool.h */,
+				CFD740092D60FEC500F56DDC /* DotFilterProfile.h */,
+				CFD7400A2D60FEC500F56DDC /* DotFirmwareVersion.h */,
+				CFD7400B2D60FEC500F56DDC /* DotLog.h */,
+				CFD7400C2D60FEC500F56DDC /* DotOtaManager.h */,
+				CFD7400D2D60FEC500F56DDC /* DotPlotData.h */,
+				CFD7400E2D60FEC500F56DDC /* DotReconnectManager.h */,
+				CFD7400F2D60FEC500F56DDC /* DotRecording.h */,
+				CFD740102D60FEC500F56DDC /* DotSyncManager.h */,
+				CFD740112D60FEC500F56DDC /* DotUtils.h */,
+				CFD740122D60FEC500F56DDC /* MovellaDotSdk.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
+		CFDD780C2D5C3EEE003B8C11 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CFDD78142D5C4297003B8C11 /* MovellaDotSdkMfm.framework */,
+				CFDD780D2D5C3EEE003B8C11 /* MovellaDotSdk.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CF2746482D1D22220008435B /* sensorwatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF2746742D1D22230008435B /* Build configuration list for PBXNativeTarget "sensorwatch Watch App" */;
+			buildPhases = (
+				CF2746452D1D22220008435B /* Sources */,
+				CF2746462D1D22220008435B /* Frameworks */,
+				CF2746472D1D22220008435B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CF27464A2D1D22220008435B /* sensorwatch Watch App */,
+				CF2746882D1D24AF0008435B /* Shared */,
+			);
+			name = "sensorwatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "sensorwatch Watch App";
+			productReference = CF2746492D1D22220008435B /* sensorwatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CF2746572D1D22230008435B /* sensorwatch Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF2746752D1D22230008435B /* Build configuration list for PBXNativeTarget "sensorwatch Watch AppTests" */;
+			buildPhases = (
+				CF2746542D1D22230008435B /* Sources */,
+				CF2746552D1D22230008435B /* Frameworks */,
+				CF2746562D1D22230008435B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF27465A2D1D22230008435B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CF27465B2D1D22230008435B /* sensorwatch Watch AppTests */,
+			);
+			name = "sensorwatch Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "sensorwatch Watch AppTests";
+			productReference = CF2746582D1D22230008435B /* sensorwatch Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CF2746612D1D22230008435B /* sensorwatch Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF2746762D1D22230008435B /* Build configuration list for PBXNativeTarget "sensorwatch Watch AppUITests" */;
+			buildPhases = (
+				CF27465E2D1D22230008435B /* Sources */,
+				CF27465F2D1D22230008435B /* Frameworks */,
+				CF2746602D1D22230008435B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF2746642D1D22230008435B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CF2746652D1D22230008435B /* sensorwatch Watch AppUITests */,
+			);
+			name = "sensorwatch Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "sensorwatch Watch AppUITests";
+			productReference = CF2746622D1D22230008435B /* sensorwatch Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		CF8D77482D1D1A4F00EE258C /* sensorlog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF8D77732D1D1A4F00EE258C /* Build configuration list for PBXNativeTarget "sensorlog" */;
+			buildPhases = (
+				CF8D77452D1D1A4F00EE258C /* Sources */,
+				CF8D77462D1D1A4F00EE258C /* Frameworks */,
+				CF8D77472D1D1A4F00EE258C /* Resources */,
+				CF27466D2D1D22230008435B /* Embed Watch Content */,
+				CFDD77FC2D5C3476003B8C11 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF27466B2D1D22230008435B /* PBXTargetDependency */,
+				CFEE92A82D1D37B000A7C343 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CF2746882D1D24AF0008435B /* Shared */,
+				CF8D774B2D1D1A4F00EE258C /* sensorlog */,
+			);
+			name = sensorlog;
+			packageProductDependencies = (
+			);
+			productName = sensorlog;
+			productReference = CF8D77492D1D1A4F00EE258C /* sensorlog.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CF8D775F2D1D1A4F00EE258C /* sensorlogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF8D77782D1D1A4F00EE258C /* Build configuration list for PBXNativeTarget "sensorlogTests" */;
+			buildPhases = (
+				CF8D775C2D1D1A4F00EE258C /* Sources */,
+				CF8D775D2D1D1A4F00EE258C /* Frameworks */,
+				CF8D775E2D1D1A4F00EE258C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF8D77622D1D1A4F00EE258C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CF8D77632D1D1A4F00EE258C /* sensorlogTests */,
+			);
+			name = sensorlogTests;
+			packageProductDependencies = (
+			);
+			productName = sensorlogTests;
+			productReference = CF8D77602D1D1A4F00EE258C /* sensorlogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CF8D77692D1D1A4F00EE258C /* sensorlogUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CF8D777B2D1D1A4F00EE258C /* Build configuration list for PBXNativeTarget "sensorlogUITests" */;
+			buildPhases = (
+				CF8D77662D1D1A4F00EE258C /* Sources */,
+				CF8D77672D1D1A4F00EE258C /* Frameworks */,
+				CF8D77682D1D1A4F00EE258C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF8D776C2D1D1A4F00EE258C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CF8D776D2D1D1A4F00EE258C /* sensorlogUITests */,
+			);
+			name = sensorlogUITests;
+			packageProductDependencies = (
+			);
+			productName = sensorlogUITests;
+			productReference = CF8D776A2D1D1A4F00EE258C /* sensorlogUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CF8D77412D1D1A4E00EE258C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					CF2746482D1D22220008435B = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					CF2746572D1D22230008435B = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = CF2746482D1D22220008435B;
+					};
+					CF2746612D1D22230008435B = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = CF2746482D1D22220008435B;
+					};
+					CF8D77482D1D1A4F00EE258C = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					CF8D775F2D1D1A4F00EE258C = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = CF8D77482D1D1A4F00EE258C;
+					};
+					CF8D77692D1D1A4F00EE258C = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = CF8D77482D1D1A4F00EE258C;
+					};
+				};
+			};
+			buildConfigurationList = CF8D77442D1D1A4E00EE258C /* Build configuration list for PBXProject "sensorlog" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF8D77402D1D1A4E00EE258C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CF8D774A2D1D1A4F00EE258C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CF8D77482D1D1A4F00EE258C /* sensorlog */,
+				CF8D775F2D1D1A4F00EE258C /* sensorlogTests */,
+				CF8D77692D1D1A4F00EE258C /* sensorlogUITests */,
+				CF2746482D1D22220008435B /* sensorwatch Watch App */,
+				CF2746572D1D22230008435B /* sensorwatch Watch AppTests */,
+				CF2746612D1D22230008435B /* sensorwatch Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CF2746472D1D22220008435B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF2746562D1D22230008435B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF2746602D1D22230008435B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D77472D1D1A4F00EE258C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D775E2D1D1A4F00EE258C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D77682D1D1A4F00EE258C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CF2746452D1D22220008435B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF2746542D1D22230008435B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF27465E2D1D22230008435B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D77452D1D1A4F00EE258C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D775C2D1D1A4F00EE258C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CF8D77662D1D1A4F00EE258C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CF27465A2D1D22230008435B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF2746482D1D22220008435B /* sensorwatch Watch App */;
+			targetProxy = CF2746592D1D22230008435B /* PBXContainerItemProxy */;
+		};
+		CF2746642D1D22230008435B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF2746482D1D22220008435B /* sensorwatch Watch App */;
+			targetProxy = CF2746632D1D22230008435B /* PBXContainerItemProxy */;
+		};
+		CF27466B2D1D22230008435B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF2746482D1D22220008435B /* sensorwatch Watch App */;
+			targetProxy = CF27466A2D1D22230008435B /* PBXContainerItemProxy */;
+		};
+		CF8D77622D1D1A4F00EE258C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8D77482D1D1A4F00EE258C /* sensorlog */;
+			targetProxy = CF8D77612D1D1A4F00EE258C /* PBXContainerItemProxy */;
+		};
+		CF8D776C2D1D1A4F00EE258C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF8D77482D1D1A4F00EE258C /* sensorlog */;
+			targetProxy = CF8D776B2D1D1A4F00EE258C /* PBXContainerItemProxy */;
+		};
+		CFEE92A82D1D37B000A7C343 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CF2746482D1D22220008435B /* sensorwatch Watch App */;
+			targetProxy = CFEE92A72D1D37B000A7C343 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CF27466E2D1D22230008435B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"sensorwatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = NT4644QVH5;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "sensorwatch Watch App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = sensorwatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = sensorlog.sensorlog;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlog.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		CF27466F2D1D22230008435B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"sensorwatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = NT4644QVH5;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "sensorwatch Watch App/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = sensorwatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = sensorlog.sensorlog;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlog.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		CF2746702D1D22230008435B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NT4644QVH5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sensorlog.sensorwatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sensorwatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sensorwatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		CF2746712D1D22230008435B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NT4644QVH5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sensorlog.sensorwatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sensorwatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sensorwatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		CF2746722D1D22230008435B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9F8Q6MHSY;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRIVATE_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/PrivateHeaders";
+				PRODUCT_BUNDLE_IDENTIFIER = "sensorlog.sensorwatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "sensorwatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		CF2746732D1D22230008435B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9F8Q6MHSY;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRIVATE_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/PrivateHeaders";
+				PRODUCT_BUNDLE_IDENTIFIER = "sensorlog.sensorwatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "sensorwatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		CF8D77742D1D1A4F00EE258C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = sensorlog/sensorlog.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "sensorlog/Preview\\ Content";
+				DEVELOPMENT_TEAM = NT4644QVH5;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Movella_DOT_SDK_iOS_v2023.6.0",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoosehyeok/Documents/sensorlog_rebuild/Headers,
+					"$/sensorlog-Bridging-Header.h",
+				);
+				INFOPLIST_FILE = sensorlog/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "We use Bluetooth to connect Movella dot devices";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "App needs your consent to access Bluetooth";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.yourname.sensorlogwatchkitapp;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/yoosehyeok/Documents/sensorlog_rebuild/sensorlog-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CF8D77752D1D1A4F00EE258C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = sensorlog/sensorlog.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "sensorlog/Preview\\ Content";
+				DEVELOPMENT_TEAM = NT4644QVH5;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Movella_DOT_SDK_iOS_v2023.6.0",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoosehyeok/Documents/sensorlog_rebuild/Headers,
+					"$/sensorlog-Bridging-Header.h",
+				);
+				INFOPLIST_FILE = sensorlog/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "We use Bluetooth to connect Movella dot devices";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "App needs your consent to access Bluetooth";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.yourname.sensorlogwatchkitapp;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/yoosehyeok/Documents/sensorlog_rebuild/sensorlog-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CF8D77762D1D1A4F00EE258C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Movella_DOT_SDK_iOS_v2023.6.0";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoosehyeok/Documents/sensorlog_rebuild/Headers,
+					"$/sensorlog-Bridging-Header.h",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "sensorlog-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		CF8D77772D1D1A4F00EE258C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Movella_DOT_SDK_iOS_v2023.6.0";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/yoosehyeok/Documents/sensorlog_rebuild/Headers,
+					"$/sensorlog-Bridging-Header.h",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "sensorlog-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CF8D77792D1D1A4F00EE258C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9F8Q6MHSY;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sensorlog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sensorlog";
+			};
+			name = Debug;
+		};
+		CF8D777A2D1D1A4F00EE258C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9F8Q6MHSY;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sensorlog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sensorlog";
+			};
+			name = Release;
+		};
+		CF8D777C2D1D1A4F00EE258C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9F8Q6MHSY;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = sensorlog;
+			};
+			name = Debug;
+		};
+		CF8D777D2D1D1A4F00EE258C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M9F8Q6MHSY;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sensorlog.sensorlogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = sensorlog;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CF2746742D1D22230008435B /* Build configuration list for PBXNativeTarget "sensorwatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF27466E2D1D22230008435B /* Debug */,
+				CF27466F2D1D22230008435B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF2746752D1D22230008435B /* Build configuration list for PBXNativeTarget "sensorwatch Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF2746702D1D22230008435B /* Debug */,
+				CF2746712D1D22230008435B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF2746762D1D22230008435B /* Build configuration list for PBXNativeTarget "sensorwatch Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF2746722D1D22230008435B /* Debug */,
+				CF2746732D1D22230008435B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF8D77442D1D1A4E00EE258C /* Build configuration list for PBXProject "sensorlog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8D77762D1D1A4F00EE258C /* Debug */,
+				CF8D77772D1D1A4F00EE258C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF8D77732D1D1A4F00EE258C /* Build configuration list for PBXNativeTarget "sensorlog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8D77742D1D1A4F00EE258C /* Debug */,
+				CF8D77752D1D1A4F00EE258C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF8D77782D1D1A4F00EE258C /* Build configuration list for PBXNativeTarget "sensorlogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8D77792D1D1A4F00EE258C /* Debug */,
+				CF8D777A2D1D1A4F00EE258C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CF8D777B2D1D1A4F00EE258C /* Build configuration list for PBXNativeTarget "sensorlogUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF8D777C2D1D1A4F00EE258C /* Debug */,
+				CF8D777D2D1D1A4F00EE258C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CF8D77412D1D1A4E00EE258C /* Project object */;
+}
