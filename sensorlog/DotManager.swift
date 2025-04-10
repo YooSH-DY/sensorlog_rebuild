@@ -65,9 +65,21 @@ class DotManager: NSObject, ObservableObject {
         DotConnectionManager.stopScan()
     }
     
-    func connect(to device: DotDevice) {
-        DotConnectionManager.connect(device)
-        DotDevicePool.bindDevice(device)
+        func connect(to device: DotDevice) {
+        // 블루투스 트래픽 분산
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DotConnectionManager.connect(device)
+            DotDevicePool.bindDevice(device)
+        }
+    }
+    // 연결 우선순위 로직 추가
+    func connectWithPriority(devices: [DotDevice]) {
+        // 기기별 연결 간격을 두어 블루투스 충돌 방지
+        for (index, device) in devices.enumerated() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 1.0) {
+                self.connect(to: device)
+            }
+        }
     }
     
     func disconnect(device: DotDevice) {
@@ -121,7 +133,7 @@ class DotManager: NSObject, ObservableObject {
             object: device
         )
     }
-
+    
 }
 
 extension DotManager: DotConnectionDelegate {

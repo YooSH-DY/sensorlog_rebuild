@@ -69,7 +69,7 @@ class DotRecordingManager: ObservableObject {
     
     // 기존 녹화 모드 (레코딩) 메소드 – 청크 전송 후 머지
     func startRecording(for device: DotDevice) {
-        device.setOutputRate(60, filterIndex: 0)
+        device.setOutputRate(20, filterIndex: 0)
         device.plotMeasureMode = .customMode4
         device.plotMeasureEnable = true
         recordedData[device.uuid] = []
@@ -145,11 +145,11 @@ class DotRecordingManager: ObservableObject {
     
     // ─────────────────────────────────────────────
     func startRealTimeRecording(for device: DotDevice) {
-        device.setOutputRate(60, filterIndex: 0)
+        device.setOutputRate(30, filterIndex: 0)
         device.plotMeasureMode = .customMode4
         device.plotMeasureEnable = true
-
-        // 첫 데이터 수신 시점의 기준 시간 저장을 위한 변수
+        
+        // 첫 데이터 수신 시점의 기준 시간 저장
         let sessionStartTime = Date()
         var firstSampleTime: UInt32? = nil
         
@@ -187,22 +187,36 @@ class DotRecordingManager: ObservableObject {
                               withY: plotData.quatY,
                               withZ: plotData.quatZ)
                 
-                // CSV 행 생성 (총 14열)
-                let dotCSVRow = "\(dotTimestamp),\(plotData.acc0),\(plotData.acc1),\(plotData.acc2)," +
-                                "\(plotData.gyr0),\(plotData.gyr1),\(plotData.gyr2)," +
-                                "\(euler[0]),\(euler[1]),\(euler[2])," +
-                                "\(plotData.quatW),\(plotData.quatX),\(plotData.quatY),\(plotData.quatZ)\n"
+                // Roll 값만 추출 (euler[0]이 Roll 값)
+                let roll = euler[0]
                 
-                RealTimeRecordingManager.shared.sendMessage("DOT:" + dotCSVRow)
+                // Roll 값만 포함하는 CSV 행 생성
+                let dotCSVRow = "\(dotTimestamp),\(roll)\n"
+                
+                // 최적화된 웹소켓 전송 문자열
+                // t=timestamp, r=roll
+                let shortTimestamp = String(format: "%.3f", actualTimestamp.timeIntervalSince1970)
+                let optimizedRow = "t:\(shortTimestamp),r:\(roll)"
+                
+                // 메시지 전송
+                RealTimeRecordingManager.shared.sendDotMessage("DOT:" + optimizedRow)
             }
         }
         self.isRecording = true
-        print("DOT RealTime 녹화 시작: \(device.uuid)")
+        print("DOT RealTime 녹화 시작: \(device.uuid) - Roll만 전송")
     }
-        
-        func stopRealTimeRecording(for device: DotDevice) {
-            device.plotMeasureEnable = false
-            self.isRecording = false
-            print("DOT RealTime 녹화 종료: \(device.uuid)")
+    
+    func stopRealTimeRecording(for device: DotDevice) {
+        device.plotMeasureEnable = false
+        self.isRecording = false
+        print("DOT RealTime 녹화 종료: \(device.uuid)")
+    }
+    // DotRecording.swift 수정
+    private let dotSendQueue = DispatchQueue(label: "com.dot.sendQueue", qos: .userInteractive)
+    
+    func sendDOTData(_ csvRow: String) {
+        dotSendQueue.async {
+            RealTimeRecordingManager.shared.sendMessage("DOT:" + csvRow)
         }
     }
+}

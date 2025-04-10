@@ -1,8 +1,3 @@
-//// filepath: /Users/yoosehyeok/Documents/sensorlog_rebuild/sensorlog/RecordingsListView.swift
-import SwiftUI
-import Foundation
-
-//// filepath: /Users/yoosehyeok/Documents/sensorlog_rebuild/sensorlog/RecordingsListView.swift
 import SwiftUI
 import Foundation
 
@@ -10,10 +5,11 @@ struct RecordingsListView: View {
     @EnvironmentObject var dataManager: PhoneDataManager
     @State private var selectedSessions: Set<UUID> = []
     @State private var showingExportOptions = false
-    @State private var showingMultipleExportView = false  // 추가: 다중 세션 내보내기 뷰 표시 여부
+    @State private var showingMultipleExportView = false  // 다중 세션 내보내기 뷰 표시 여부
     @State private var sensorDatasToExport: [SensorData] = []
     @State private var isSelectionMode: Bool = false
     @State private var localEditMode: EditMode = .inactive  // 별도 상태 변수
+    @State private var showingRealtimeGraph = false  // 실시간 그래프 표시 여부
 
     func calculateDuration(session: SessionData) -> String {
         let endTime = session.stopTimestamp ?? Date()
@@ -23,34 +19,55 @@ struct RecordingsListView: View {
     
     var body: some View {
         NavigationView {
-            List(selection: $selectedSessions) {
-                if isSelectionMode {
-                    ForEach(dataManager.sessionRecordings) { session in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(session.name)
-                                    .font(.headline)
-                                Text("데이터 수: \(session.allSensorData.count)")
-                                    .font(.subheadline)
+            VStack {
+//                // 실시간 쿼터니언 버튼
+//                Button(action: {
+//                    showingRealtimeGraph = true
+//                }) {
+//                    HStack {
+//                        Image(systemName: "waveform.path.ecg")
+//                        Text("실시간 쿼터니언 데이터 보기")
+//                    }
+//                    .frame(maxWidth: .infinity)
+//                    .padding()
+//                    .background(Color.blue)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(8)
+//                }
+//                .padding(.horizontal)
+//                .padding(.top, 8)
+//                
+                // 기존 리스트 내용
+                List(selection: $selectedSessions) {
+                    if isSelectionMode {
+                        ForEach(dataManager.sessionRecordings) { session in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(session.name)
+                                        .font(.headline)
+                                    Text("데이터 수: \(session.allSensorData.count)")
+                                        .font(.subheadline)
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .contentShape(Rectangle())
+                            .tag(session.id)
                         }
-                        .contentShape(Rectangle())
-                        .tag(session.id)
-                    }
-                } else {
-                    ForEach(dataManager.sessionRecordings) { session in
-                        NavigationLink(destination: SessionOptionsView(session: session)) {
-                            VStack(alignment: .leading) {
-                                Text(session.name)
-                                    .font(.headline)
-                                Text("데이터 수: \(session.allSensorData.count)")
-                                    .font(.subheadline)
+                    } else {
+                        ForEach(dataManager.sessionRecordings) { session in
+                            NavigationLink(destination: SessionOptionsView(session: session)) {
+                                VStack(alignment: .leading) {
+                                    Text(session.name)
+                                        .font(.headline)
+                                    Text("데이터 수: \(session.allSensorData.count)")
+                                        .font(.subheadline)
+                                }
                             }
                         }
+                        .onDelete(perform: deleteSessions)
                     }
-                    .onDelete(perform: deleteSessions)
                 }
+                .listStyle(PlainListStyle())
             }
             .navigationTitle("세션")
             .environment(\.editMode, $localEditMode)
@@ -87,11 +104,16 @@ struct RecordingsListView: View {
                 }
             }
         }
+        // 실시간 그래프 시트
+        .sheet(isPresented: $showingRealtimeGraph) {
+            RealtimeGraphView()
+                .environmentObject(dataManager)
+        }
         // 기존 CSV 내보내기 시트
         .sheet(isPresented: $showingExportOptions) {
             ShareSheet(activityItems: sensorDatasToExport)
         }
-        // 추가: 다중 세션 내보내기 뷰를 모달로 표시 (선택한 세션들만 전달)
+        // 다중 세션 내보내기 뷰 모달
         .sheet(isPresented: $showingMultipleExportView) {
             MultipleSessionExportView(sessions: dataManager.sessionRecordings.filter { selectedSessions.contains($0.id) })
         }

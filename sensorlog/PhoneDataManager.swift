@@ -5,7 +5,7 @@ class PhoneDataManager: NSObject, ObservableObject {
     static let shared = PhoneDataManager()
     
     // 모든 화면에서 사용할 녹화 모드 (RecordMode 또는 Realtime)
-    @Published var recordingMode: RecordMode = .record
+    @Published var recordingMode: RecordMode = .realtime
     
     @Published var sessionRecordings: [SessionData] = [] {
         didSet {
@@ -52,22 +52,27 @@ class PhoneDataManager: NSObject, ObservableObject {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         
-        // 워치에서 전달받은 CoreMotion 타임스탬프 사용
+        // 워치에서 전달받은 타임스탬프 사용
         let watchTimestamp = formatter.string(from: data.startTimestamp)
         
-        let acc = data.accelerometer
-        let gyro = data.gyroscope
-        
-        // 수정: 불필요한 빈 열 제거하고 워치 데이터만 7열로 구성
-        let csvRow = "\(watchTimestamp),\(acc.x),\(acc.y),\(acc.z),\(gyro.x),\(gyro.y),\(gyro.z)\n"
-        
-        print("워치 타임스탬프: " + watchTimestamp)
-        // WATCH: 접두사 추가하여 전송
-        RealTimeRecordingManager.shared.sendMessage("WATCH:" + csvRow)
-        
-        DispatchQueue.main.async {
-            session.watchSensorData.append(data)
-            self.latestWatchCSV = csvRow
+        // 데이터가 Yaw만 포함하는 경우
+        if let eulerAngles = data.eulerAngles {
+            let yaw = eulerAngles.yaw
+            
+            // CSV 형식 유지 (필요없는 값은 0으로)
+            let csvRow = "\(watchTimestamp),0,0,0,0,0,0,0,0,\(yaw)\n"
+            
+            // 최적화된 웹소켓 전송 문자열
+            let shortTimestamp = String(format: "%.3f", data.startTimestamp.timeIntervalSince1970)
+            let optimizedRow = "t:\(shortTimestamp),y:\(yaw)"
+            
+            // 웹소켓으로 전송
+            RealTimeRecordingManager.shared.sendWatchMessage("W:" + optimizedRow)
+            
+            DispatchQueue.main.async {
+                session.watchSensorData.append(data)
+                self.latestWatchCSV = csvRow
+            }
         }
     }
     
@@ -287,27 +292,40 @@ extension PhoneDataManager: WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) { session.activate() }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        // 워치 센서 데이터 타입 처리
+        // 워치 센서 데이터 타입 처리 - Yaw만 수신하는 방식으로 변경
         if let type = message["type"] as? String, type == "watchSensorData",
            let timestamp = message["timestamp"] as? TimeInterval,
-           let accX = message["accX"] as? Double,
-           let accY = message["accY"] as? Double,
-           let accZ = message["accZ"] as? Double,
-           let gyroX = message["gyroX"] as? Double,
-           let gyroY = message["gyroY"] as? Double,
-           let gyroZ = message["gyroZ"] as? Double {
+           let yaw = message["yaw"] as? Double {
             
+            let date = Date(timeIntervalSince1970: timestamp)
+            
+            // 워치에서는 Yaw만 제공하므로 나머지 값은 0으로 채움
             let sensorData = SensorData(
                 id: UUID(),
-                startTimestamp: Date(timeIntervalSince1970: timestamp),
+                source: "WATCH",
+                startTimestamp: date,
                 stopTimestamp: nil,
-                accelerometer: AccelerometerData(x: accX, y: accY, z: accZ, timestamp: Date(timeIntervalSince1970: timestamp)),
-                gyroscope: GyroscopeData(x: gyroX, y: gyroY, z: gyroZ, timestamp: Date(timeIntervalSince1970: timestamp)),
-                eulerAngles: nil,
+                accelerometer: AccelerometerData(x: 0, y: 0, z: 0, timestamp: date),
+                gyroscope: GyroscopeData(x: 0, y: 0, z: 0, timestamp: date),
+                eulerAngles: EulerAngles(roll: 0, pitch: 0, yaw: yaw),
                 quaternion: nil
             )
+            
             DispatchQueue.main.async {
                 self.sensorDataReceived(sensorData)
+                
+                // Watch 데이터 CSV 형식 유지 (Yaw만 포함)
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+                formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+                let formattedTimestamp = formatter.string(from: date)
+                
+                // 기존 CSV 형식 유지하면서 Yaw만 값 포함
+                self.latestWatchCSV = "\(formattedTimestamp),0,0,0,0,0,0,0,0,\(yaw)\n"
+                
+                // 웹소켓으로 전송하는 경우, 최적화된 형식으로 전송
+                let optimizedRow = "t:\(timestamp),y:\(yaw)"
+                RealTimeRecordingManager.shared.sendMessage("W:" + optimizedRow)
             }
         }
         // 기존 DOT 센서 데이터 청크 처리 코드 (있는 경우)
