@@ -68,10 +68,19 @@ struct SessionDetailView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("시간: \(customFormatter.string(from: data.startTimestamp))")
                                     .font(.caption)
-                                Text("가속도계 - X: \(data.accelerometer.x), Y: \(data.accelerometer.y), Z: \(data.accelerometer.z)")
+                                Text("가속도계 - X: \(String(format: "%.4f", data.accelerometer.x)), Y: \(String(format: "%.4f", data.accelerometer.y)), Z: \(String(format: "%.4f", data.accelerometer.z))")
                                     .font(.caption2)
-                                Text("자이로스코프 - X: \(data.gyroscope.x), Y: \(data.gyroscope.y), Z: \(data.gyroscope.z)")
+                                Text("자이로스코프 - X: \(String(format: "%.4f", data.gyroscope.x)), Y: \(String(format: "%.4f", data.gyroscope.y)), Z: \(String(format: "%.4f", data.gyroscope.z))")
                                     .font(.caption2)
+                                if let euler = data.eulerAngles {
+                                    Text("오일러각 - Roll: \(String(format: "%.4f", euler.roll)), Pitch: \(String(format: "%.4f", euler.pitch)), Yaw: \(String(format: "%.4f", euler.yaw))")
+                                        .font(.caption2)
+                                }
+                                if let quaternion = data.quaternion {
+                                    Text("쿼터니언 - W: \(String(format: "%.4f", quaternion.w)), X: \(String(format: "%.4f", quaternion.x)), Y: \(String(format: "%.4f", quaternion.y)), Z: \(String(format: "%.4f", quaternion.z))")
+                                        .font(.caption2)
+                                }
+                                Divider()
                             }
                             .padding(.vertical, 2)
                         }

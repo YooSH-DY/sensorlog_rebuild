@@ -80,7 +80,7 @@ class WatchDataManager: ObservableObject {
         }
         
         // 60Hz로 설정 (16.67ms 간격)
-        motionManager.deviceMotionUpdateInterval = 1.0 / 20.0
+        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
         
         // 전용 OperationQueue 생성
         let sensorQueue = OperationQueue()
@@ -135,10 +135,10 @@ class WatchDataManager: ObservableObject {
                 // CSV 행 생성 - 쿼터니언 값(w, x, y, z) 추가
                 let csvRow = "\(formattedTimestamp),\(accX),\(accY),\(accZ),\(gyroX),\(gyroY),\(gyroZ),\(quatW),\(quatX),\(quatY),\(quatZ)\n"
                 
-                // 메시지 전송
-                DispatchQueue.main.async {
-                    self.sendMessage(csvRow)
-                }
+//                // 메시지 전송
+//                DispatchQueue.main.async {
+//                    self.sendMessage(csvRow)
+//                }
             } else {
                 // 정상적인 경우 (중복 없음)
                 self.lastTimestamp = sensorTimestamp
@@ -152,9 +152,9 @@ class WatchDataManager: ObservableObject {
                             "\(motion.attitude.quaternion.w),\(motion.attitude.quaternion.x),\(motion.attitude.quaternion.y),\(motion.attitude.quaternion.z)\n"
                 
                 // 메시지 전송
-                DispatchQueue.main.async {
-                    self.sendMessage(csvRow)
-                }
+//                DispatchQueue.main.async {
+//                    self.sendMessage(csvRow)
+//                }
             }
         }
     }

@@ -1,10 +1,20 @@
 import Foundation
 import CoreMotion
 import WatchConnectivity
+import WatchKit
 
-class WatchSensorManager: NSObject, ObservableObject {
+class WatchSensorManager: NSObject, ObservableObject, WKExtendedRuntimeSessionDelegate {
+    // Xcode가 추가한 메서드 (올바른 시그니처)
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: (any Error)?) {
+        print("ExtendedRuntimeSession 종료됨, 이유: \(reason)")
+        if let error = error {
+            print("종료 오류: \(error.localizedDescription)")
+        }
+        stopRealTimeRecording() // 기존 로직 유지
+    }
     private var motionManager = CMMotionManager()
     private var session = WCSession.default
+    private var runtimeSession: WKExtendedRuntimeSession?
     @Published var isRecording = false
     // 녹화 모드(청크 방식)용 데이터 저장 배열
     private var recordedData = [SensorData]()
@@ -17,11 +27,23 @@ class WatchSensorManager: NSObject, ObservableObject {
         super.init()
         setupWCSession()
     }
-
+    // WKExtendedRuntimeSessionDelegate 필수 메서드들 다시 구현
+        func extendedRuntimeSessionDidStart(_ session: WKExtendedRuntimeSession) {
+            print("ExtendedRuntimeSession 시작됨")
+            startRealTimeRecording()
+        }
+        
+        func extendedRuntimeSessionWillExpire(_ session: WKExtendedRuntimeSession) {
+            print("ExtendedRuntimeSession 만료 임박")
+        }
+        
     private func setupWCSession() {
         if WCSession.isSupported() {
             session.delegate = self
             session.activate()
+            print("워치: WCSession 활성화 시도")
+        } else {
+            print("워치: WCSession이 지원되지 않음")
         }
     }
     
@@ -32,18 +54,21 @@ class WatchSensorManager: NSObject, ObservableObject {
             print("DeviceMotion 지원 안됨")
             return
         }
-        
+        // @Published 속성은 메인 스레드에서 변경
+        DispatchQueue.main.async {
+            self.isRecording = true
+            // recordedData도 메인 스레드에서 변경해야 함
+            self.recordedData.removeAll()
+        }
         // 부팅 시간 계산 (현재 시간 - systemUptime)
         let bootTimeInterval = Date().timeIntervalSince1970 - ProcessInfo.processInfo.systemUptime
         var lastTimestamp: Date?
         var lastSendTime = Date()
-        let minSendInterval: TimeInterval = 0.05  // 50ms마다 전송 (초당 20개로 제한)
+        //let minSendInterval: TimeInterval = 0.05  // 50ms마다 전송 (초당 20개로 제한)
         
-        isRecording = true
-        print("startRealTimeRecording 호출됨")
         
-        // 샘플링 속도를 20Hz로 제한하여 안정성 향상
-        motionManager.deviceMotionUpdateInterval = 1.0 / 30.0
+        // 리얼타임모드 웹소켓전송 속도 이거임
+        motionManager.deviceMotionUpdateInterval = 1.0 / 20.0
         
         // 전용 처리 큐 설정
         let motionQueue = OperationQueue()
@@ -59,13 +84,17 @@ class WatchSensorManager: NSObject, ObservableObject {
                 }
                 return
             }
+            // isRecording 확인을 위한 로컬 변수 사용
+            var shouldProcess = false
+            DispatchQueue.main.sync {
+                shouldProcess = self.isRecording
+            }
+            
+            guard shouldProcess else { return }
             
             // 전송 간격 제한 - 너무 빈번한 전송 방지
             let now = Date()
             let elapsed = now.timeIntervalSince(lastSendTime)
-            if elapsed < minSendInterval {
-                return  // 최소 간격을 채우지 않았으면 건너뜀
-            }
             
             // CoreMotion의 timestamp를 실제 시간으로 변환
             let motionTimestamp = bootTimeInterval + motion.timestamp
@@ -81,13 +110,53 @@ class WatchSensorManager: NSObject, ObservableObject {
             
             lastSendTime = now
             
-            // Yaw 값 계산 (쿼터니언에서 변환)
-            let quaternion = motion.attitude.quaternion
-            let yaw = self.calculateYaw(from: quaternion)
+            // 모든 센서 데이터 수집
+            // 1. 가속도 데이터
+            let userAccel = motion.userAcceleration
+            let accX = userAccel.x
+            let accY = userAccel.y
+            let accZ = userAccel.z
             
-            // 최적화된 데이터 형식 - Yaw만 포함
-            // 기존 메시지 형식과 호환되도록 구성
-            let sensorDict: [String: Any] = [
+            // 2. 자이로스코프 데이터
+            let rotationRate = motion.rotationRate
+            let gyroX = rotationRate.x
+            let gyroY = rotationRate.y
+            let gyroZ = rotationRate.z
+            
+            // 3. 오일러 각도 계산
+            let attitude = motion.attitude
+            let roll = attitude.roll * (180.0 / .pi)
+            let pitch = attitude.pitch * (180.0 / .pi)
+            let yaw = attitude.yaw * (180.0 / .pi)
+            
+            // 4. 쿼터니언 데이터
+            let quat = motion.attitude.quaternion
+            let quatW = quat.w
+            let quatX = quat.x
+            let quatY = quat.y
+            let quatZ = quat.z
+            
+            // 로그 추가: 수집된 센서 데이터 출력
+//            print("""
+//            [워치 실시간] \(sensorTimestamp)
+//            acc: (\(String(format: "%.3f", accX)), \(String(format: "%.3f", accY)), \(String(format: "%.3f", accZ)))
+//            gyro: (\(String(format: "%.3f", gyroX)), \(String(format: "%.3f", gyroY)), \(String(format: "%.3f", gyroZ)))
+//            euler: (roll: \(String(format: "%.2f", roll)), pitch: \(String(format: "%.2f", pitch)), yaw: \(String(format: "%.2f", yaw)))
+//            quat: (w: \(String(format: "%.3f", quatW)), x: \(String(format: "%.3f", quatX)), y: \(String(format: "%.3f", quatY)), z: \(String(format: "%.3f", quatZ)))
+//            """)
+            
+            // 전체 센서 데이터 딕셔너리 생성 (로컬 저장용)
+            let fullSensorDict: [String: Any] = [
+                "type": "watchSensorDataFull",
+                "timestamp": (lastTimestamp ?? sensorTimestamp).timeIntervalSince1970,
+                "accX": accX, "accY": accY, "accZ": accZ,
+                "gyroX": gyroX, "gyroY": gyroY, "gyroZ": gyroZ,
+                "roll": roll, "pitch": pitch, "yaw": yaw,
+                "quatW": quatW, "quatX": quatX, "quatY": quatY, "quatZ": quatZ
+            ]
+            
+            // 웹소켓 전송용 간소화된 메시지 (Yaw만 포함)
+            let transmitDict: [String: Any] = [
                 "type": "watchSensorData",
                 "timestamp": (lastTimestamp ?? sensorTimestamp).timeIntervalSince1970,
                 "yaw": Double(String(format: "%.2f", yaw)) ?? yaw
@@ -95,8 +164,18 @@ class WatchSensorManager: NSObject, ObservableObject {
             
             // 메인 스레드에서 전송 (WCSession 요구사항)
             DispatchQueue.main.async {
-                self.session.sendMessage(sensorDict, replyHandler: nil) { error in
-                    print("워치 데이터 전송 오류: \(error.localizedDescription)")
+                guard self.session.isReachable else {
+                        print("📴 iPhone Unreachable: 메세지 버퍼링 또는 재시도")
+                        return
+                    }
+                // 전체 데이터는 로컬 저장을 위해 전송
+                self.session.sendMessage(fullSensorDict, replyHandler: nil) { error in
+                    print("워치 전체 데이터 전송 오류: \(error.localizedDescription)")
+                }
+                
+                // 최적화된 데이터는 웹소켓 전송용으로만 사용
+                self.session.sendMessage(transmitDict, replyHandler: nil) { error in
+                    print("워치 간소화 데이터 전송 오류: \(error.localizedDescription)")
                 }
             }
         }
@@ -115,25 +194,37 @@ class WatchSensorManager: NSObject, ObservableObject {
         // 라디안에서 각도로 변환
         return yaw * (180.0 / .pi)
     }
-        func stopRealTimeRecording() {
-            motionManager.stopDeviceMotionUpdates()
-            isRecording = false
-            print("Watch RealTime Recording Stopped.")
+    func stopRealTimeRecording() {
+        motionManager.stopDeviceMotionUpdates()
+        // 메인 스레드에서 속성 업데이트
+        DispatchQueue.main.async {
+            self.isRecording = false
         }
+        print("Watch RealTime Recording Stopped.")
+    }
     
     func startRecording() {
         guard motionManager.isDeviceMotionAvailable else { return }
-        isRecording = true
-        recordedData.removeAll()
-        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0 //60hz
+        
+        // 메인 스레드에서 속성 업데이트
+        DispatchQueue.main.async {
+            self.isRecording = true
+            self.recordedData.removeAll()
+        }
+        
+        motionManager.deviceMotionUpdateInterval = 1.0 / 30.0 //60hz
 
-        // 기기 모션 데이터를 가져오기 위한 참조 프레임 설정
-        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: .main) { [weak self] motion, error in
+        // 전용 큐 사용
+        let motionQueue = OperationQueue()
+        motionQueue.maxConcurrentOperationCount = 1
+        motionQueue.qualityOfService = .userInitiated
+
+        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: motionQueue) { [weak self] motion, error in
             guard let self = self, let motion = motion else { return }
 
             let currentTimestamp = Date()
 
-            // AccelerometerData 생성
+            // 모든 데이터 수집
             let accelerometerData = AccelerometerData(
                 x: motion.userAcceleration.x,
                 y: motion.userAcceleration.y,
@@ -141,7 +232,6 @@ class WatchSensorManager: NSObject, ObservableObject {
                 timestamp: currentTimestamp
             )
 
-            // GyroscopeData 생성
             let gyroscopeData = GyroscopeData(
                 x: motion.rotationRate.x,
                 y: motion.rotationRate.y,
@@ -149,7 +239,6 @@ class WatchSensorManager: NSObject, ObservableObject {
                 timestamp: currentTimestamp
             )
             
-            // 쿼터니언 데이터 추가
             let quaternionData = Quaternion(
                 w: motion.attitude.quaternion.w,
                 x: motion.attitude.quaternion.x,
@@ -157,7 +246,6 @@ class WatchSensorManager: NSObject, ObservableObject {
                 z: motion.attitude.quaternion.z
             )
 
-            // SensorData 객체 생성 (쿼터니언 포함)
             let data = SensorData(
                 id: UUID(),
                 startTimestamp: currentTimestamp,
@@ -168,19 +256,28 @@ class WatchSensorManager: NSObject, ObservableObject {
                 quaternion: quaternionData
             )
 
-            self.recordedData.append(data)
+            // 메인 스레드에서 UI 업데이트
+            DispatchQueue.main.async {
+                self.recordedData.append(data)
+            }
         }
     }
+
     func stopRecording() {
-        isRecording = false
+        // 메인 스레드에서 속성 업데이트
+        DispatchQueue.main.async {
+            self.isRecording = false
+        }
+        
         motionManager.stopDeviceMotionUpdates()
 
         // 종료 시간 업데이트
-        if let lastIndex = recordedData.indices.last {
-            recordedData[lastIndex].stopTimestamp = Date()
+        DispatchQueue.main.async {
+            if let lastIndex = self.recordedData.indices.last {
+                self.recordedData[lastIndex].stopTimestamp = Date()
+            }
+            self.sendRecordedDataInChunks()
         }
-
-        sendRecordedDataInChunks()
     }
 
     private func sendRecordedDataInChunks() {
@@ -266,7 +363,7 @@ class WatchSensorManager: NSObject, ObservableObject {
 
 extension WatchSensorManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) { }
-
+    
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         if let command = message["command"] as? String {
             print("워치에서 수신한 명령: \(command)")
@@ -287,4 +384,5 @@ extension WatchSensorManager: WCSessionDelegate {
             }
         }
     }
+    
 }

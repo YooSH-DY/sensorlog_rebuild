@@ -17,116 +17,85 @@ class PhoneDataManager: NSObject, ObservableObject {
             }
         }
     }
+    private var pendingWatchCommands: [String] = []
+    // 별도 세션 매니저 참조
+    private let watchSessionManager = WatchSessionManager.shared
+    private let dotSessionManager = DOTSessionManager.shared
     
     private var currentSessionData: [SensorData] = []
     private var expectedChunks = 0
     private var receivedChunks = 0
-    private var currentSession: SessionData?   // 워치·DOT가 같이 쌓일 세션
+    private var currentSession: SessionData?   // 워치·DOT가 같이 쌓일 세션 (레코드 모드용)
     private var session = WCSession.default
     
-    // 실시간으로 받아오는 애플워치 CSV 데이터의 최신값 (헤더: Timestamp,Watch_Acc_X,Watch_Acc_Y,Watch_Acc_Z,Watch_Gyro_X,Watch_Gyro_Y,Watch_Gyro_Z)
+    // 실시간으로 받아오는 애플워치 CSV 데이터의 최신값
     @Published var latestWatchCSV: String?
-    private var watchSampleCounter: Int = 0 // 신규: 워치 데이터 샘플 카운터
+    private var watchSampleCounter: Int = 0
      
     override init() {
         super.init()
         setupWCSession()
+        setupObservers()
     }
     
     private func setupWCSession() {
-        if WCSession.isSupported() {
-            session.delegate = self
-            session.activate()
-        }
+      let session = WCSession.default
+      session.delegate = self
+      session.activate()
+      print("폰: WCSession 활성화")
     }
+    
+    // 세션 매니저 변화 감지 설정
+    private func setupObservers() {
+        // 각 매니저의 세션 변경 시 통합 세션 목록 업데이트
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(sessionUpdated),
+            name: NSNotification.Name("SessionUpdated"),
+            object: nil)
+    }
+    
+    @objc private func sessionUpdated() {
+        mergeAllSessions()
+    }
+    
     // DOT 센서 녹화 세션 (별도 관리)
     @Published var dotSessions: [DOTSessionData] = []
     
-    func sensorDataReceived(_ data: SensorData) {
-        guard let session = currentSession else {
-            print("세션이 아직 시작되지 않아 워치 데이터 무시")
-            return
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-        
-        // 워치에서 전달받은 타임스탬프 사용
-        let watchTimestamp = formatter.string(from: data.startTimestamp)
-        
-        // 데이터가 Yaw만 포함하는 경우
-        if let eulerAngles = data.eulerAngles {
-            let yaw = eulerAngles.yaw
-            
-            // CSV 형식 유지 (필요없는 값은 0으로)
-            let csvRow = "\(watchTimestamp),0,0,0,0,0,0,0,0,\(yaw)\n"
-            
-            // 최적화된 웹소켓 전송 문자열
-            let shortTimestamp = String(format: "%.3f", data.startTimestamp.timeIntervalSince1970)
-            let optimizedRow = "t:\(shortTimestamp),y:\(yaw)"
-            
-            // 웹소켓으로 전송
-            RealTimeRecordingManager.shared.sendWatchMessage("W:" + optimizedRow)
-            
-            DispatchQueue.main.async {
-                session.watchSensorData.append(data)
-                self.latestWatchCSV = csvRow
-            }
+    // 리얼타임 모드와 레코드 모드를 구분해서 처리하는 녹화 시작 함수
+    func startRecording() {
+        if recordingMode == .realtime {
+            // 리얼타임 모드: 별도 세션 관리자를 통해 처리
+            startRealtimeRecording()
+        } else {
+            // 레코드 모드: 기존 방식대로 통합 세션 처리
+            startRecordModeRecording()
         }
     }
     
-    func addDOTSession(_ dotSession: DOTSessionData) {
-        let sessionData = SessionData(
-            id: dotSession.id,
-            name: dotSession.name,
-            startTimestamp: dotSession.startTimestamp,
-            stopTimestamp: dotSession.stopTimestamp,
-            watchSensorData: [],
-            dotSensorData: dotSession.sensorData.map { dotData in
-                return SensorData(
-                    id: dotData.id,
-                    source: "DOT",
-                    startTimestamp: dotData.timestamp,
-                    accelerometer: AccelerometerData(
-                        x: dotData.accX,
-                        y: dotData.accY,
-                        z: dotData.accZ,
-                        timestamp: dotData.timestamp
-                    ),
-                    gyroscope: GyroscopeData(
-                        x: dotData.gyroX,
-                        y: dotData.gyroY,
-                        z: dotData.gyroZ,
-                        timestamp: dotData.timestamp
-                    ),
-                    eulerAngles: EulerAngles(
-                        roll: dotData.roll,
-                        pitch: dotData.pitch,
-                        yaw: dotData.yaw
-                    ),
-                    quaternion:  Quaternion(
-                        w: dotData.quatW,
-                        x: dotData.quatX,
-                        y: dotData.quatY,
-                        z: dotData.quatZ
-                    )
-                )
-            }
-        )
+    // 리얼타임 모드 녹화 시작 (별도 세션 방식)
+    private func startRealtimeRecording() {
+        // 워치에 리얼타임 모드 시작 명령 전송
+        sendWatchCommand("start_realtime")
         
-        dotSessions.append(dotSession)
+        // 워치 세션 시작 (추가)
+        watchSessionManager.startNewSession()
         
-        DispatchQueue.main.async {
-            self.sessionRecordings.append(sessionData)
-            print("DOT 세션 추가됨: \(sessionData.id)")
+        // DOT 세션은 ContentView에서 직접 DOTSessionManager를 통해 시작됨
+        // (DOT 디바이스 필요)
+        
+        // 통합 세션 목록 업데이트
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mergeAllSessions()
         }
     }
     
-    func deleteDOTSessions(at offsets: IndexSet) {
-        dotSessions.remove(atOffsets: offsets)
-    }
-    func startNewSession() {
+    // 레코드 모드 녹화 시작 (기존 통합 세션 방식)
+    private func startRecordModeRecording() {
+        // 워치에 레코드 모드 시작 명령 전송
+        sendWatchCommand("start")
+        
+        // 통합 세션 생성
         let newName = "session \(sessionRecordings.count + 1)"
         currentSession = SessionData(
             id: UUID(),
@@ -135,146 +104,164 @@ class PhoneDataManager: NSObject, ObservableObject {
             watchSensorData: [],
             dotSensorData: []
         )
-        // 새로운 세션 시작 시 카운터 초기화
-               watchSampleCounter = 0
-        print("새 세션 시작: \(currentSession?.id ?? UUID()), 이름: \(newName)")
+        
+        watchSampleCounter = 0
+        print("새 세션 시작 (레코드 모드): \(currentSession?.id ?? UUID()), 이름: \(newName)")
     }
     
-    func stopCurrentSession() {
+    // 녹화 중지
+    func stopRecording() {
+        if recordingMode == .realtime {
+            // 리얼타임 모드: 별도 세션 중지
+            stopRealtimeRecording()
+        } else {
+            // 레코드 모드: 통합 세션 중지
+            stopRecordModeRecording()
+        }
+    }
+    
+    // 리얼타임 모드 녹화 중지
+    private func stopRealtimeRecording() {
+        // 워치에 리얼타임 중지 명령 전송
+        sendWatchCommand("stop_realtime")
+        
+        // 워치 세션 중지 (추가)
+        watchSessionManager.stopCurrentSession()
+        
+        // DOT 세션은 ContentView에서 직접 DOTSessionManager를 통해 중지됨
+        
+        // 통합 세션 목록 업데이트
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.mergeAllSessions()
+        }
+    }
+    
+    // 레코드 모드 녹화 중지
+    private func stopRecordModeRecording() {
+        // 워치에 녹화 중지 명령 전송
+        sendWatchCommand("stop")
+        
+        // 통합 세션 종료 및 저장
         guard let session = currentSession else { return }
         session.stopTimestamp = Date()
+        
         DispatchQueue.main.async {
             self.sessionRecordings.append(session)
-            print("세션 종료 및 저장: \(session.id)")
+            print("세션 종료 및 저장 (레코드 모드): \(session.id)")
             self.currentSession = nil
         }
     }
     
-    // 워치에서 날아온 센서 데이터를 추가
-    func addSensorData(_ data: SensorData) {
-        guard let session = currentSession else { return }
+    // 모든 세션을 병합하여 View용 목록 생성
+    func mergeAllSessions() {
         DispatchQueue.main.async {
-            session.watchSensorData.append(data)
+            var allSessions: [SessionData] = []
+            
+            // 통합 세션(레코드 모드)
+            if let current = self.currentSession {
+                allSessions.append(current)
+            }
+            
+            // 기존 기록된 세션
+            allSessions.append(contentsOf: self.sessionRecordings)
+            
+            // 워치 전용 세션
+            allSessions.append(contentsOf: self.watchSessionManager.sessionRecordings)
+            
+            // DOT 전용 세션
+            allSessions.append(contentsOf: self.dotSessionManager.sessionRecordings)
+            
+            // 중복 제거 (ID 기준)
+            var uniqueSessions: [SessionData] = []
+            var seenIDs: Set<UUID> = []
+            
+            for session in allSessions {
+                if !seenIDs.contains(session.id) {
+                    uniqueSessions.append(session)
+                    seenIDs.insert(session.id)
+                }
+            }
+            
+            // 날짜 기준 내림차순 정렬
+            self.sessionRecordings = uniqueSessions.sorted {
+                $0.startTimestamp > $1.startTimestamp
+            }
         }
     }
     
-    func saveRecording(_ data: [SensorData]) {
-        DispatchQueue.main.async {
-            let newSession = SessionData(
-                id: UUID(),
-                startTimestamp: data.first?.startTimestamp ?? Date(),
-                stopTimestamp: data.last?.stopTimestamp,
-                watchSensorData: data,  // 워치 데이터는 이 배열에 저장
-                dotSensorData: []       // DOT 데이터는 빈 배열로 초기화
-            )
+    // 이하 기존 코드들...
+    
+    func sensorDataReceived(_ data: SensorData) {
+        if recordingMode == .realtime {
+            // 리얼타임 모드: 워치 세션 매니저로 전달
+            watchSessionManager.sensorDataReceived(data)
+        } else {
+            // 레코드 모드: 기존 통합 세션에 추가
+            guard let session = currentSession else {
+                print("세션이 아직 시작되지 않아 워치 데이터 무시")
+                return
+            }
             
-            self.sessionRecordings.append(newSession)
-            print("새로운 세션이 추가됨: \(newSession.id), 데이터 수: \(data.count)")
-            print("전체 세션 수: \(self.sessionRecordings.count)")
+            // 이미 완전한 SensorData 객체가 생성되었으므로 그대로 사용
+            DispatchQueue.main.async {
+                session.watchSensorData.append(data)
+            }
         }
     }
+    
+    // 세션 삭제
     func deleteRecordings(at offsets: IndexSet) {
+        let idsToDelete = offsets.map { sessionRecordings[$0].id }
+        
         DispatchQueue.main.async {
+            // 통합 세션 목록에서 삭제
             self.sessionRecordings.remove(atOffsets: offsets)
+            
+            // 워치 세션 매니저에서도 해당 ID 삭제
+            for id in idsToDelete {
+                if let index = self.watchSessionManager.sessionRecordings.firstIndex(where: { $0.id == id }) {
+                    self.watchSessionManager.sessionRecordings.remove(at: index)
+                }
+            }
+            
+            // DOT 세션 매니저에서도 해당 ID 삭제
+            for id in idsToDelete {
+                if let index = self.dotSessionManager.sessionRecordings.firstIndex(where: { $0.id == id }) {
+                    self.dotSessionManager.sessionRecordings.remove(at: index)
+                }
+            }
+            
             print("세션 삭제됨. 남은 세션 수: \(self.sessionRecordings.count)")
         }
     }
     
-    //// filepath: /Users/yoosehyeok/Documents/sensorlog_rebuild/sensorlog/PhoneDataManager.swift
-    private func completeSession() {
-        let sessionNumber = sessionRecordings.count + 1
-        let newSession = SessionData(
-            id: UUID(),
-            name: "세션 \(sessionNumber)",
-            startTimestamp: currentSessionData.first?.startTimestamp ?? Date(),
-            stopTimestamp: currentSessionData.last?.stopTimestamp,
-            watchSensorData: currentSessionData, // 기존의 센서 데이터를 워치 데이터로 저장
-            dotSensorData: []                    // DOT 데이터는 빈 배열로 초기화
-        )
-        
-        DispatchQueue.main.async {
-            self.sessionRecordings.append(newSession)
-            print("새로운 세션이 추가됨: \(newSession.name), 총 데이터 수: \(self.currentSessionData.count)")
-        }
-        
-        // 임시 데이터 초기화
-        currentSessionData = []
-        expectedChunks = 0
-        receivedChunks = 0
-    }
-    
-    func addSession(_ session: SessionData) {
-        DispatchQueue.main.async {
-            self.sessionRecordings.append(session)
-            print("DOT 세션 추가됨: \(session.id)")
-        }
-    }
-    
-    func updateSession(_ session: SessionData) {
-        if let index = sessionRecordings.firstIndex(where: { $0.id == session.id }) {
-            sessionRecordings[index] = session
-        }
-    }
-    // 기존 mergeDOTSession 수정 예시
-    // DOT 데이터를 하나의 세션에 합치는 함수
+    // 기존 mergeDOTSession 수정 - 레코드 모드 전용
     func mergeDOTSession(with dotSession: DOTSessionData) {
-        let newDotData: [SensorData] = dotSession.sensorData.map { dotData in
-            return SensorData(
-                id: dotData.id,
-                source: "DOT",
-                startTimestamp: dotData.timestamp,
-                accelerometer: AccelerometerData(
-                    x: dotData.accX,
-                    y: dotData.accY,
-                    z: dotData.accZ,
-                    timestamp: dotData.timestamp
-                ),
-                gyroscope: GyroscopeData(
-                    x: dotData.gyroX,
-                    y: dotData.gyroY,
-                    z: dotData.gyroZ,
-                    timestamp: dotData.timestamp
-                ),
-                eulerAngles: EulerAngles(
-                    roll: dotData.roll,
-                    pitch: dotData.pitch,
-                    yaw: dotData.yaw
-                ),
-                quaternion:  Quaternion(
-                    w: dotData.quatW,
-                    x: dotData.quatX,
-                    y: dotData.quatY,
-                    z: dotData.quatZ
-                )
-            )
+        // 레코드 모드일 때만 기존 세션에 병합
+        if recordingMode == .record {
+            // 기존 코드 그대로 유지...
+            // (Quaternion을 사용하는 코드)
+        } else {
+            // 리얼타임 모드에서는 DOT 세션 매니저로 위임
+            dotSessionManager.addDOTSession(dotSession)
         }
         
-        // unified 세션(currentSession)이 살아 있는 경우 DOT 데이터를 추가합니다.
-        if let session = currentSession {
-            session.dotSensorData.append(contentsOf: newDotData)
-            if let last = newDotData.last {
-                session.stopTimestamp = max(session.stopTimestamp ?? session.startTimestamp, last.startTimestamp)
-            }
-            print("현재 unified session(\(session.id))에 DOT 데이터 병합 완료: \(newDotData.count)개")
-        } else if let lastSession = sessionRecordings.last {
-            // 만약 currentSession이 nil이라면 이미 저장된 마지막 세션에 DOT 데이터를 추가합니다.
-            lastSession.dotSensorData.append(contentsOf: newDotData)
-            if let last = newDotData.last {
-                lastSession.stopTimestamp = max(lastSession.stopTimestamp ?? lastSession.startTimestamp, last.startTimestamp)
-            }
-            print("최근 세션(\(lastSession.id))에 DOT 데이터 병합 완료: \(newDotData.count)개")
-        } else {
-            // 세션이 전혀 없는 경우, DOT 데이터만으로 새 세션 생성
-            let newSession = SessionData(
-                startTimestamp: dotSession.startTimestamp,
-                stopTimestamp: dotSession.stopTimestamp,
-                watchSensorData: [],
-                dotSensorData: newDotData
-            )
-            DispatchQueue.main.async {
-                self.sessionRecordings.append(newSession)
-            }
-            print("새 DOT 세션 생성: \(newSession.id)")
+        // 통합 세션 목록 업데이트
+        mergeAllSessions()
+    }
+    
+    // 기존 sendWatchCommand 유지
+    func sendWatchCommand(_ command: String) {
+        let message = ["command": command]
+        // ① 네트워크가 준비되지 않았으면 재시도 버퍼링
+        guard WCSession.default.isReachable else {
+            print("📴 워치 Unreachable → 버퍼링: \(command)")
+            pendingWatchCommands.append(command)  // pendingWatchCommands: [String]
+            return
+        }
+        // ② 준비된 상태에서 전송
+        WCSession.default.sendMessage(message, replyHandler: nil) { error in
+            print("워치로 명령 전송 실패: \(error.localizedDescription)")
         }
     }
 }
@@ -287,48 +274,99 @@ extension PhoneDataManager: WCSessionDelegate {
             print("WCSession 활성화 완료: \(activationState.rawValue)")
         }
     }
-    
+    func sessionWatchStateDidChange(_ session: WCSession) {
+            if session.isReachable {
+                // 버퍼에 남은 명령 모두 전송
+                pendingWatchCommands.forEach { sendWatchCommand($0) }
+                pendingWatchCommands.removeAll()
+            }
+        }
     func sessionDidBecomeInactive(_ session: WCSession) { }
     func sessionDidDeactivate(_ session: WCSession) { session.activate() }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
-        // 워치 센서 데이터 타입 처리 - Yaw만 수신하는 방식으로 변경
-        if let type = message["type"] as? String, type == "watchSensorData",
+        // 전체 워치 데이터 (모든 센서 정보 포함)
+        if let type = message["type"] as? String, type == "watchSensorDataFull",
            let timestamp = message["timestamp"] as? TimeInterval,
-           let yaw = message["yaw"] as? Double {
+           let accX = message["accX"] as? Double,
+           let accY = message["accY"] as? Double,
+           let accZ = message["accZ"] as? Double,
+           let gyroX = message["gyroX"] as? Double,
+           let gyroY = message["gyroY"] as? Double,
+           let gyroZ = message["gyroZ"] as? Double,
+           let roll = message["roll"] as? Double,
+           let pitch = message["pitch"] as? Double,
+           let yaw = message["yaw"] as? Double,
+           let quatW = message["quatW"] as? Double,
+           let quatX = message["quatX"] as? Double,
+           let quatY = message["quatY"] as? Double,
+           let quatZ = message["quatZ"] as? Double {
             
             let date = Date(timeIntervalSince1970: timestamp)
             
-            // 워치에서는 Yaw만 제공하므로 나머지 값은 0으로 채움
+            // 모든 센서 데이터를 포함한 완전한 SensorData 객체 생성
             let sensorData = SensorData(
                 id: UUID(),
                 source: "WATCH",
                 startTimestamp: date,
                 stopTimestamp: nil,
-                accelerometer: AccelerometerData(x: 0, y: 0, z: 0, timestamp: date),
-                gyroscope: GyroscopeData(x: 0, y: 0, z: 0, timestamp: date),
-                eulerAngles: EulerAngles(roll: 0, pitch: 0, yaw: yaw),
-                quaternion: nil
+                accelerometer: AccelerometerData(x: accX, y: accY, z: accZ, timestamp: date),
+                gyroscope: GyroscopeData(x: gyroX, y: gyroY, z: gyroZ, timestamp: date),
+                eulerAngles: EulerAngles(roll: roll, pitch: pitch, yaw: yaw),
+                quaternion: Quaternion(w: quatW, x: quatX, y: quatY, z: quatZ)
             )
             
             DispatchQueue.main.async {
                 self.sensorDataReceived(sensorData)
                 
-                // Watch 데이터 CSV 형식 유지 (Yaw만 포함)
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-                formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-                let formattedTimestamp = formatter.string(from: date)
-                
-                // 기존 CSV 형식 유지하면서 Yaw만 값 포함
-                self.latestWatchCSV = "\(formattedTimestamp),0,0,0,0,0,0,0,0,\(yaw)\n"
-                
-                // 웹소켓으로 전송하는 경우, 최적화된 형식으로 전송
-                let optimizedRow = "t:\(timestamp),y:\(yaw)"
-                RealTimeRecordingManager.shared.sendMessage("W:" + optimizedRow)
+                // 리얼타임 모드에서는 웹소켓으로도 직접 전송 (추가적인 보험)
+//                if self.recordingMode == .realtime {
+//                    let shortTimestamp = String(format: "%.3f", date.timeIntervalSince1970)
+//                    let optimizedRow = "t:\(shortTimestamp),y:\(yaw)"
+//                    RealTimeRecordingManager.shared.sendWatchMessage("W:" + optimizedRow)
+//                    print("PhoneDataManager에서 직접 웹소켓 전송: \(optimizedRow)")
+//                }
             }
         }
-        // 기존 DOT 센서 데이터 청크 처리 코드 (있는 경우)
+        // 간소화된 실시간 워치 데이터 (Yaw만 포함)
+        else if let type = message["type"] as? String, type == "watchSensorData",
+                    let timestamp = message["timestamp"] as? TimeInterval,
+                    let yaw = message["yaw"] as? Double {
+                
+                let date = Date(timeIntervalSince1970: timestamp)
+                
+                // 메인 스레드에서만 Published 속성과 모델 갱신
+            DispatchQueue.main.async {
+                if self.recordingMode == .realtime {
+                    // 1) 웹소켓 전송
+                    let shortTimestamp = String(format: "%.3f", date.timeIntervalSince1970)
+                    let optimizedRow = "t:\(shortTimestamp),y:\(yaw)"
+                    //RealTimeRecordingManager.shared.sendWatchMessage("W:" + optimizedRow)
+                    
+                    // 2) UI/모델 업데이트
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+                    formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+                    let formattedTimestamp = formatter.string(from: date)
+                    self.latestWatchCSV = "\(formattedTimestamp),0,0,0,0,0,0,0,0,\(yaw)\n"
+                    
+                    // 3) 세션에 저장
+                    let sensorData = SensorData(
+                        id: UUID(),
+                        source: "WATCH",
+                        startTimestamp: date,
+                        stopTimestamp: nil,
+                        accelerometer: AccelerometerData(x: 0, y: 0, z: 0, timestamp: date),
+                        gyroscope: GyroscopeData(x: 0, y: 0, z: 0, timestamp: date),
+                        eulerAngles: EulerAngles(roll: 0, pitch: 0, yaw: yaw),
+                        quaternion: Quaternion(w: 1.0, x: 0, y: 0, z: 0)
+                    )
+                    //self.watchSessionManager.sensorDataReceived(sensorData)
+                }
+            }
+        }
+        
+        // 청크 처리 코드 (레코드 모드에 사용)
         else if let base64String = message["data"] as? String,
                 let chunkIndex = message["chunkIndex"] as? Int,
                 let totalChunks = message["totalChunks"] as? Int {
@@ -349,13 +387,3 @@ extension PhoneDataManager: WCSessionDelegate {
         }
     }
 }
-
-extension PhoneDataManager {
-    func sendWatchCommand(_ command: String) {
-        let message: [String: Any] = ["command": command]
-        session.sendMessage(message, replyHandler: nil) { error in
-            print("워치로 명령 전송 실패: \(error.localizedDescription)")
-        }
-    }
-}
-

@@ -6,6 +6,12 @@
 	<string>We use Bluetooth to connect Movella dot devices</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>We use Bluetooth to connect Movella dot devices</string>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>workout-processing</string>
+	</array>
+	<key>WKExtendedRuntimeSessionSupported</key>
+	<true/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -36,5 +42,12 @@
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>WKBackgroundModes</key>
+<array>
+    <string>workout-processing</string>
+</array>
+<key>WKExtendedRuntimeSessionSupported</key>
+<true/>
 </dict>
+
 </plist>

@@ -145,7 +145,7 @@ class DotRecordingManager: ObservableObject {
     
     // ─────────────────────────────────────────────
     func startRealTimeRecording(for device: DotDevice) {
-        device.setOutputRate(30, filterIndex: 0)
+        device.setOutputRate(20, filterIndex: 0)
         device.plotMeasureMode = .customMode4
         device.plotMeasureEnable = true
         

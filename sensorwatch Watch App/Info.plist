@@ -2,13 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<true/>
-		<key>UISceneConfigurations</key>
-		<dict/>
-	</dict>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -19,5 +12,15 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
 	</dict>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>workout-processing</string>
+	</array>
+	<key>WKExtendedRuntimeSessionSupported</key>
+	<true/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>이 앱은 장시간 센서 데이터를 수집하기 위해 건강 데이터 접근 권한이 필요합니다.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>이 앱은 장시간 센서 데이터를 수집하기 위해 건강 데이터 갱신 권한이 필요합니다.</string>
 </dict>
 </plist>

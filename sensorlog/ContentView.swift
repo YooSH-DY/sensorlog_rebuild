@@ -146,40 +146,24 @@ struct ContentView: View {
                 HStack {
                     Button(action: {
                         if isRecording {
-                            // 녹화 정지
-                            dataManager.sendWatchCommand(dataManager.recordingMode == .realtime ? "stop_realtime" : "stop")
-                            if let device = dotManager.connectedDots.first {
+                            // 녹화 중지
+                            PhoneDataManager.shared.sendWatchCommand("stop_realtime")
+                            dotManager.connectedDots.forEach { device in
                                 if dataManager.recordingMode == .record {
-                                    recordingManager.finishRecording(for: device)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                                        dataManager.stopCurrentSession()
-                                        print("Unified session 종료 (Record Mode)")
-                                    }
-                                } else { // realtime mode
-                                    // DOT 센서는 별도 녹화 기능(청크)도 호출
-                                    recordingManager.stopRealTimeRecording(for: device)
-                                    RealTimeRecordingManager.shared.disconnect() {
-                                        print("Realtime session 종료")
-                                    }
-                                    dataManager.stopCurrentSession()
+                                    recordingManager.stopRecording(for: device)
+                                } else {
+                                    DOTSessionManager.shared.stopRealTimeRecording(for: device)
                                 }
                             }
                             isRecording = false
                         } else {
                             // 녹화 시작
-                            dataManager.sendWatchCommand(dataManager.recordingMode == .realtime ? "start_realtime" : "start")
-                            if let device = dotManager.connectedDots.first {
+                            PhoneDataManager.shared.sendWatchCommand("start_realtime")
+                            dotManager.connectedDots.forEach { device in
                                 if dataManager.recordingMode == .record {
                                     recordingManager.startRecording(for: device)
-                                    dataManager.startNewSession()
-                                    print("Record Mode: 새로운 통합 세션 시작")
-                                } else { // realtime mode
-                                    // DOT 센서 녹화 기능(청크 방식)은 계속 호출 (필요한 경우)
-                                    recordingManager.startRealTimeRecording(for: device)
-                                    dataManager.startNewSession()
-                                    // 실시간으로 애플워치 데이터 전송을 위해 RealTimeRecordingManager 연결
-                                    RealTimeRecordingManager.shared.connect()
-                                    print("Realtime Mode: 새로운 세션 시작 (실시간 전송)")
+                                } else {
+                                    DOTSessionManager.shared.startRealTimeRecording(for: device)
                                 }
                             }
                             isRecording = true
