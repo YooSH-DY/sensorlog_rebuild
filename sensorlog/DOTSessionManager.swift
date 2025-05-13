@@ -265,9 +265,10 @@ class DOTSessionManager: NSObject, ObservableObject {
                 "type": "dotSensorData",
                 "deviceId": wsPrefix,
                 "timestamp": actualTimestamp.timeIntervalSince1970,
-                "r": String(format: "%.2f", roll),
-                "p": String(format: "%.2f", pitch),
-                "y": String(format: "%.2f", yaw)
+                "w": String(format: "%.3f", quatW),  // 소수점 3자리로 포맷팅
+                "x": String(format: "%.3f", quatX),  // quatX로 변경
+                "y": String(format: "%.3f", quatY),  // quatY로 변경
+                "z": String(format: "%.3f", quatZ)   // quatZ로 변경
             ]
             if let jsonData = try? JSONSerialization.data(withJSONObject: messageDict),
                let jsonString = String(data: jsonData, encoding: .utf8) {
